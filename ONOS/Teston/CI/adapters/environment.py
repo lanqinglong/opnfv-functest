@@ -109,8 +109,8 @@ class environment:
         NewFile.close
 
     def OnosEnvSetup( self ):
-        DownLoadCode( 'https://github.com/sunyulin/OnosSystemTest.git' )
-        DownLoadCode( 'https://gerrit.onosproject.org/onos' )
-        ChangeOnosName(agentusername,agentpassword)
-        CleanEnv()
-        SetEnvVar(masterpassword,agentpassword)
+        self.DownLoadCode( 'https://github.com/sunyulin/OnosSystemTest.git' )
+        self.DownLoadCode( 'https://gerrit.onosproject.org/onos' )
+        self.ChangeOnosName(agentusername,agentpassword)
+        self.CleanEnv()
+        self.SetEnvVar(masterpassword,agentpassword)

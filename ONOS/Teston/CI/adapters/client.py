@@ -9,7 +9,7 @@ from environment import environment
 class client( foundation, environment ):
 
     def __init__( self ):
-        self = self
+        self.loginfo = foundation()
 
     def RunScript( self, testname, masterusername, masterpassword ):
         ChangeTestCasePara( testname, masterusername, masterpassword )
@@ -27,7 +27,7 @@ class client( foundation, environment ):
         agentpassword = "root"
     
         print "Test Begin....."
-        OnosConnectionSet(self)
-        SSHlogin("10.1.0.1",masterusername,masterpassword)
-        OnosEnvSetup(self)
+        self.OnosConnectionSet()
+        self.SSHlogin("189.42.8.101 ",masterusername,masterpassword)
+        self.OnosEnvSetup()
          

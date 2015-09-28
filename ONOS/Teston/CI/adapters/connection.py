@@ -73,8 +73,33 @@ class connection:
                 self.loginfo.log("Generate SSH key failed.")
         self.loginfo.log( "Generate SSH key success." )
 
+    def GetRootAuth( self, password ):
+        print( "Now changing to user root" )
+        login = pexpect.spawn( "su - root" )
+        index = 0
+        while index != 2:
+            index = login.expect( ['assword:', "failure", \
+                                   pexpect.EOF, pexpect.TIMEOUT] )
+            if index == 0:
+                login.sendline( password )
+            if index == 1:
+                self.loginfo.log("Change user to root failed.")
+        login.interact()
+
+    def ReleaseRootAuth( self ):
+        print( "Now Release user root" )
+        login = pexpect.spawn( "exit" )
+        index = login.expect( ['logout', \
+                                pexpect.EOF, pexpect.TIMEOUT] )
+        if index == 0:
+            self.loginfo.log("Release root user success.")
+        if index == 1:
+            self.loginfo.log("Release root user failed.")
+        login.interact()
+
     def AddEnvIntoBashrc( self, envalue ):
         print "Now Adding bash environment"
+        os.system( "chmod a+r /etc/profile" )
         fileopen = open( "/etc/profile", 'r' )
         findContext = 1
         while findContext:
@@ -88,9 +113,10 @@ class connection:
             envAdd.writelines( "\n" + envalue )
             envAdd.close( )
         self.loginfo.log( "Add env to bashrc success!" )
-    
+
     def OnosConnectionSet (self):
-        Gensshkey()
-        AddKarafUser("10.1.0.50","karaf","karaf")
-        AddEnvIntoBashrc("source onos/tools/dev/bash_profile")
-        
+        self.GetRootAuth("root")
+        self.Gensshkey()
+        self.AddKarafUser("189.42.8.101","karaf","karaf")
+        self.AddEnvIntoBashrc("source onos/tools/dev/bash_profile")
+        self.ReleaseRootAuth()

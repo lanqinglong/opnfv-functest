@@ -1,9 +1,9 @@
 """
 Description:
     This file is used to make connections
-    Include ssh & exchange public-key to each other so that 
+    Include ssh & exchange public-key to each other so that
     it can run without password
-    
+
     lanqinglong@huawei.com
 """
 import os
@@ -12,7 +12,7 @@ import time
 import pexpect
 import re
 import sys
-from foundation import foundation 
+from foundation import foundation
 
 class connection:
 
@@ -20,6 +20,13 @@ class connection:
         self.loginfo = foundation()
 
     def AddKnownHost( self, ipaddr, username, password ):
+        """
+        Add an user to known host,so that onos can login in with onos $ipaddr.
+        parameters:
+        ipaddr:   ip address
+        username: login user name
+        password: login password
+        """
         print( "Now Adding an user to known hosts " + ipaddr )
         login = pexpect.spawn( "ssh -l %s -p 8101 %s"%( username, ipaddr ) )
         index = 0
@@ -34,11 +41,15 @@ class connection:
                     self.loginfo.log( "Add SSH Known Host Success!" )
                 else:
                     self.loginfo.log( "Add SSH Known Host Failed! Please Check!" )
-                login.interact()
+                #login.interact()
+
             if index == 1:
                 login.sendline('yes')
 
-    def Gensshkey(self):
+    def Gensshkey( self ):
+        """
+        Generate ssh keys, used for some server have no sshkey.
+        """
         print "Now Generating SSH keys..."
         os.system("rm -rf ~/.ssh/*")
         keysub = pexpect.spawn("ssh-keygen -t rsa")
@@ -52,9 +63,15 @@ class connection:
                 keysub.sendline("\n")
             if Result == 3:
                 self.loginfo.log("Generate SSH key failed.")
+
         self.loginfo.log( "Generate SSH key success." )
 
     def GetRootAuth( self, password ):
+        """
+        Get root user
+        parameters:
+        password: root login password
+        """
         print( "Now changing to user root" )
         login = pexpect.spawn( "su - root" )
         index = 0
@@ -65,9 +82,13 @@ class connection:
                 login.sendline( password )
             if index == 1:
                 self.loginfo.log("Change user to root failed.")
+
         login.interact()
 
     def ReleaseRootAuth( self ):
+        """
+        Exit root user.
+        """
         print( "Now Release user root" )
         login = pexpect.spawn( "exit" )
         index = login.expect( ['logout', \
@@ -76,9 +97,15 @@ class connection:
             self.loginfo.log("Release root user success.")
         if index == 1:
             self.loginfo.log("Release root user failed.")
+
         login.interact()
 
     def AddEnvIntoBashrc( self, envalue ):
+        """
+        Add Env var into /etc/profile.
+        parameters:
+        envalue: environment value to add
+        """
         print "Now Adding bash environment"
         fileopen = open( "/etc/profile", 'r' )
         findContext = 1
@@ -95,6 +122,9 @@ class connection:
         self.loginfo.log( "Add env to bashrc success!" )
 
     def OnosConnectionSet (self):
+        """
+        Intergrate for ONOS connection setup
+        """
         self.Gensshkey()
         self.AddKnownHost( self.OC1, "karaf", "karaf" )
         self.AddKnownHost( self.OC2, "karaf", "karaf" )

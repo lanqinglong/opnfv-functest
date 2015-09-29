@@ -30,7 +30,7 @@ class environment:
             index = gitclone.expect ( ['already exists', 'resolving deltas: 100%', \
                                     'Receiving objects', 'Already up-to-date', \
                                     pexpect.EOF] )
-            
+
             filefolder = originalfolder + '/' + codeurl.split('/')[-1].split('.')[0]
             if index == 0 :
                 os.chdir( filefolder )
@@ -51,6 +51,7 @@ class environment:
                 self.loginfo.log( 'Information before' + gitclone.before )
                 break
             time.sleep(5)
+        gitclone.prompt()
 
     def InstallDefaultSoftware( self, handle ):
         print "Now Cleaning test environment"
@@ -60,6 +61,7 @@ class environment:
         handle.sendline("OnosSystemTest/TestON/bin/cleanup.sh")
         time.sleep(5)
         self.loginfo.log( 'Clean environment success!' )
+        handle.prompt()
 
     def OnosPushKeys(self, handle, cmd, password):
         print "Now Pushing Onos Keys:"+cmd
@@ -77,6 +79,7 @@ class environment:
                 self.loginfo.log( "ONOS Push keys Success!" )
             if ( Result == 3 ):
                 self.loginfo.log( "ONOS Push keys Error!" )
+        handle.prompt()
         print "Done!"
 
     def SetOnosEnvVar( self, handle, masterpass, agentpass):
@@ -87,13 +90,14 @@ class environment:
         self.OnosPushKeys( handle, "onos-push-keys " + self.OC3, agentpass)
         self.OnosPushKeys( handle, "onos-push-keys " + self.OCN, agentpass)
         self.OnosPushKeys( handle, "onos-push-keys " + self.OCN2, agentpass)
+        handle.prompt()
     
     def ChangeOnosName( self, user, password):
         print "Now Changing ONOS name&password"
-        if masterusername is 'root':
+        if self.masterusername is 'root':
             filepath = '/root/'
         else :
-            filepath = '/home/' +masterusername + '/'
+            filepath = '/home/' + self.masterusername + '/'
         line = open(filepath + "onos/tools/build/envDefaults", 'r').readlines()
         lenall = len(line)-1
         for i in range(lenall):
@@ -110,10 +114,10 @@ class environment:
 
     def ChangeTestCasePara(testcase,user,password):
         print "Now Changing " + testcase +  " name&password"
-        if masterusername is 'root':
+        if self.masterusername is 'root':
             filepath = '/root/'
         else :
-            filepath = '/home/' + masterusername + '/'
+            filepath = '/home/' + self.masterusername + '/'
         filepath = filepath +"OnosSystemTest/TestON/tests/" + testcase + "/" + testcase + ".topo"
         line = open(filepath,'r').readlines()
         lenall = len(line)-1
@@ -153,6 +157,7 @@ class environment:
     def SSHRelease( self, handle ):
         #Release ssh
         handle.logout()
+        handle.prompt()
 
     def OnosEnvSetup( self, handle ):
 

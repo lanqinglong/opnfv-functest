@@ -11,7 +11,7 @@ import time
 class foundation:
     
     def __init__(self):
-        self.dir = os.path.join( os.getcwd(), '../log' )
+        self.dir = os.path.join( os.getcwd(), 'log' )
 
     def log (self, loginfo):
 

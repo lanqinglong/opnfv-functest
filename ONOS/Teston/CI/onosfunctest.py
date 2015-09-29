@@ -12,5 +12,6 @@ from adapters.client import client
 if __name__=="__main__":
 
     main = client()
+    main.onosbasic()
     main.RunScript("FUNCvirNetNB",masterusername,masterpassword)
     main.RunScript("FUNCovsdbtest",masterusername,masterpassword)

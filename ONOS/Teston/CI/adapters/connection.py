@@ -19,25 +19,6 @@ class connection:
     def __init__( self ):
         self.loginfo = foundation()
 
-    def SSHlogin ( self, ipaddr, username, password ) :
-        login = pexpect.spawn ( 'ssh %s@%s' % ( username, ipaddr ) )
-        index = 0
-        while index != 2 :
-            index = login.expect ( ['assword:', 'yes/no', '#|$', \
-                                    pexpect.EOF, pexpect.TIMEOUT ] )
-            if index == 0 :
-                login.sendline( password )
-                login.interact( )
-            if index == 1 :
-                login.sendline( 'yes' )
-            if index == 3 :
-                self.loginfo.log( 'Ssh return EOF,see screen information:' )
-                self.loginfo.log( 'Info before:' + login.before )
-                self.loginfo.log( 'Info after' + login.after )
-            if index == 4 :
-                self.loginfo.log( 'SSH timeout, please check the connection' )
-        print ("SSH login " + ipaddr + " success!")
-
     def AddKnownHost( self, ipaddr, username, password ):
         print( "Now Adding an user to known hosts " + ipaddr )
         login = pexpect.spawn( "ssh -l %s -p 8101 %s"%( username, ipaddr ) )
@@ -99,7 +80,6 @@ class connection:
 
     def AddEnvIntoBashrc( self, envalue ):
         print "Now Adding bash environment"
-        os.system( "chmod a+r /etc/profile" )
         fileopen = open( "/etc/profile", 'r' )
         findContext = 1
         while findContext:
@@ -115,8 +95,17 @@ class connection:
         self.loginfo.log( "Add env to bashrc success!" )
 
     def OnosConnectionSet (self):
-        self.GetRootAuth("root")
         self.Gensshkey()
-        self.AddKarafUser("189.42.8.101","karaf","karaf")
-        self.AddEnvIntoBashrc("source onos/tools/dev/bash_profile")
-        self.ReleaseRootAuth()
+        self.AddKnownHost( self.OC1, "karaf", "karaf" )
+        self.AddKnownHost( self.OC2, "karaf", "karaf" )
+        self.AddKnownHost( self.OC3, "karaf", "karaf" )
+        currentpath = os.getcwd()
+        filepath = os.path.join( currentpath, "onos/tools/dev/bash_profile" )
+        self.AddEnvIntoBashrc("source " + filepath + "\n")
+        self.AddEnvIntoBashrc("export OCT=" + self.OCT)
+        self.AddEnvIntoBashrc("export OC1=" + self.OC1)
+        self.AddEnvIntoBashrc("export OC2=" + self.OC2)
+        self.AddEnvIntoBashrc("export OC3=" + self.OC3)
+        self.AddEnvIntoBashrc("export OCN=" + self.OCN)
+        self.AddEnvIntoBashrc("export OCN2=" + self.OCN2)
+        self.AddEnvIntoBashrc("export localhost=" + self.localhost)

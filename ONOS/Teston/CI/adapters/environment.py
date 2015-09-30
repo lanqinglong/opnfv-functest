@@ -69,7 +69,7 @@ class environment:
         Pushkeys.sendline( cmd )
         Result = 0
         while Result != 2:
-            Result = Pushkeys.expect( ["yes", "password", "#|$", pexpect.EOF, \
+            Result = Pushkeys.expect( ["yes", "password", Pushkeys.PROMPT, pexpect.EOF, \
                                        pexpect.TIMEOUT])
             if ( Result == 0 ):
                 Pushkeys.sendline( "yes" )

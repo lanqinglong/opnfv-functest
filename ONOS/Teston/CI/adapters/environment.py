@@ -1,12 +1,14 @@
 """
 Description:
     This file is used to setup the running environment
-     
+    Include Download code,setup environment variable
+            Set onos running config
+            Set user name/password
+            Onos-push-keys and so on
     lanqinglong@huawei.com
 """
 
 import os
-import os.path
 import time
 import pexpect
 import re
@@ -21,6 +23,12 @@ class environment:
         self.masterhandle = ''
 
     def DownLoadCode( self, handle, codeurl ):
+        """
+        Download Code use 'git clone'
+        parameters:
+        handle:  current working handle
+        codeurl: clone code url
+        """
         print "Now loading test codes! Please wait in patient..."
         originalfolder = os.getcwd()
         gitclone = handle
@@ -51,25 +59,40 @@ class environment:
                 self.loginfo.log( 'Information before' + gitclone.before )
                 break
             time.sleep(5)
-        gitclone.prompt()
+        gitclone.prompt( )
 
     def InstallDefaultSoftware( self, handle ):
+        """
+        Install default software
+        parameters:
+        handle(input): current working handle
+        """
         print "Now Cleaning test environment"
         handle.sendline("sudo apt-get install -y mininet")
+        handle.prompt( )
         handle.sendline("sudo pip install configobj")
+        handle.prompt( )
         handle.sendline("sudo apt-get install -y sshpass")
+        handle.prompt( )
         handle.sendline("OnosSystemTest/TestON/bin/cleanup.sh")
+        handle.prompt( )
         time.sleep(5)
         self.loginfo.log( 'Clean environment success!' )
-        handle.prompt()
 
     def OnosPushKeys(self, handle, cmd, password):
+        """
+        Using onos-push-keys to make ssh device without password
+        parameters:
+        handle(input): working handle
+        cmd(input): onos-push-keys xxx(xxx is device)
+        password(input): login in password
+        """
         print "Now Pushing Onos Keys:"+cmd
         Pushkeys = handle
         Pushkeys.sendline( cmd )
         Result = 0
         while Result != 2:
-            Result = Pushkeys.expect( ["yes", "password", Pushkeys.PROMPT, pexpect.EOF, \
+            Result = Pushkeys.expect( ["yes", "password", "#|$", pexpect.EOF, \
                                        pexpect.TIMEOUT])
             if ( Result == 0 ):
                 Pushkeys.sendline( "yes" )
@@ -79,10 +102,17 @@ class environment:
                 self.loginfo.log( "ONOS Push keys Success!" )
             if ( Result == 3 ):
                 self.loginfo.log( "ONOS Push keys Error!" )
-        handle.prompt()
+        Pushkeys.prompt( )
         print "Done!"
 
     def SetOnosEnvVar( self, handle, masterpass, agentpass):
+        """
+        Setup onos pushkeys to all devices(3+2)
+        parameters:
+        handle(input): current working handle
+        masterpass: scripts running server's password
+        agentpass: onos cluster&compute node password
+        """
         print "Now Setting test environment"
         self.OnosPushKeys( handle, "onos-push-keys " + self.OCT, masterpass)
         self.OnosPushKeys( handle, "onos-push-keys " + self.OC1, agentpass)
@@ -90,14 +120,20 @@ class environment:
         self.OnosPushKeys( handle, "onos-push-keys " + self.OC3, agentpass)
         self.OnosPushKeys( handle, "onos-push-keys " + self.OCN, agentpass)
         self.OnosPushKeys( handle, "onos-push-keys " + self.OCN2, agentpass)
-        handle.prompt()
-    
+
     def ChangeOnosName( self, user, password):
+        """
+        Change onos name in envDefault file
+        Because some command depend on this
+        parameters:
+        user: onos&compute node user
+        password: onos&compute node password
+        """
         print "Now Changing ONOS name&password"
-        if self.masterusername is 'root':
+        if masterusername is 'root':
             filepath = '/root/'
         else :
-            filepath = '/home/' + self.masterusername + '/'
+            filepath = '/home/' +masterusername + '/'
         line = open(filepath + "onos/tools/build/envDefaults", 'r').readlines()
         lenall = len(line)-1
         for i in range(lenall):
@@ -113,12 +149,19 @@ class environment:
         print "Done!"
 
     def ChangeTestCasePara(testcase,user,password):
+        """
+        When running test script, there's something need \
+        to change in every test folder's *.param & *.topo files
+        user: onos&compute node user
+        password: onos&compute node password
+        """
         print "Now Changing " + testcase +  " name&password"
-        if self.masterusername is 'root':
+        if masterusername is 'root':
             filepath = '/root/'
         else :
-            filepath = '/home/' + self.masterusername + '/'
-        filepath = filepath +"OnosSystemTest/TestON/tests/" + testcase + "/" + testcase + ".topo"
+            filepath = '/home/' + masterusername + '/'
+        filepath = filepath +"OnosSystemTest/TestON/tests/" + testcase + "/" + \
+                   testcase + ".topo"
         line = open(filepath,'r').readlines()
         lenall = len(line)-1
         for i in range(lenall-2):
@@ -157,10 +200,11 @@ class environment:
     def SSHRelease( self, handle ):
         #Release ssh
         handle.logout()
-        handle.prompt()
 
     def OnosEnvSetup( self, handle ):
-
+        """
+        Onos Environment Setup function
+        """
         self.DownLoadCode( handle, 'https://github.com/sunyulin/OnosSystemTest.git' )
         self.DownLoadCode( handle, 'https://gerrit.onosproject.org/onos' )
         self.ChangeOnosName(self.agentusername,self.agentpassword)

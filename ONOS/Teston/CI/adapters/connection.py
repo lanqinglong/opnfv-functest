@@ -7,7 +7,6 @@ Description:
     lanqinglong@huawei.com
 """
 import os
-import os.path
 import time
 import pexpect
 import re
@@ -51,7 +50,13 @@ class connection:
         Generate ssh keys, used for some server have no sshkey.
         """
         print "Now Generating SSH keys..."
-        os.system("rm -rf ~/.ssh/*")
+        #Here file name may be id_rsa or id_ecdsa or others
+        #So here will have a judgement
+        filelist = os.listdir( '~/.ssh' )
+        for item in filelist:
+            if 'id' in item:
+                self.loginfo.log("SSH keys are exsit in ssh directory.")
+                return True
         keysub = pexpect.spawn("ssh-keygen -t rsa")
         Result = 0
         while Result != 2:

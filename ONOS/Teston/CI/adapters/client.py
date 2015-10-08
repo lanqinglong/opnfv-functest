@@ -13,6 +13,13 @@ class client( connection, foundation, environment ):
         self.loginfo = foundation()
 
     def RunScript( self, testname, masterusername, masterpassword ):
+        """
+        Run ONOS Test Script
+        Parameters:
+        testname: ONOS Testcase Name
+        masterusername: The server username of running ONOS
+        masterpassword: The server password of running ONOS
+        """
         self.ChangeTestCasePara( testname, masterusername, masterpassword )
         runtest = "OnosSystemTest/TestON/bin/cli.py run " + testname
         os.system(runtest)

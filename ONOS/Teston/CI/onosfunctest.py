@@ -26,5 +26,5 @@ if __name__=="__main__":
     main.OCN2 = '189.42.8.105'
     main.localhost = main.OCT
     main.onosbasic()
-    main.RunScript("FUNCvirNetNB",self.masterusername,self.masterpassword)
-    main.RunScript("FUNCovsdbtest",self.masterusername,self.masterpassword)
+    main.RunScript("FUNCvirNetNB",main.masterusername,main.masterpassword)
+    main.RunScript("FUNCovsdbtest",main.masterusername,main.masterpassword)

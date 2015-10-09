@@ -19,7 +19,7 @@ class connection( foundation ):
         foundation.__init__( self )
         self.loginfo = foundation()
 
-    def AddKnownHost( self, ipaddr, username, password ):
+    def AddKnownHost( self, handle, ipaddr, username, password ):
         """
         Add an user to known host,so that onos can login in with onos $ipaddr.
         parameters:
@@ -28,7 +28,8 @@ class connection( foundation ):
         password: login password
         """
         print( "Now Adding an user to known hosts " + ipaddr )
-        login = pexpect.spawn( "ssh -l %s -p 8101 %s"%( username, ipaddr ) )
+        login = handle
+        login.sendline( "ssh -l %s -p 8101 %s"%( username, ipaddr ) )
         index = 0
         while index != 2:
             index = login.expect( ['assword:', 'yes/no', pexpect.EOF, \
@@ -151,10 +152,6 @@ class connection( foundation ):
         """
         Intergrate for ONOS connection setup
         """
-        self.Gensshkey()
-        self.AddKnownHost( self.OC1, "karaf", "karaf" )
-        self.AddKnownHost( self.OC2, "karaf", "karaf" )
-        self.AddKnownHost( self.OC3, "karaf", "karaf" )
         currentpath = os.getcwd()
         filepath = os.path.join( currentpath, "onos/tools/dev/bash_profile" )
         self.AddEnvIntoBashrc("source " + filepath + "\n")

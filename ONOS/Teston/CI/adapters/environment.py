@@ -203,6 +203,10 @@ class environment( connection ):
         """
         Onos Environment Setup function
         """
+        self.Gensshkey( handle )
+        self.AddKnownHost( handle, self.OC1, "karaf", "karaf" )
+        self.AddKnownHost( handle, self.OC2, "karaf", "karaf" )
+        self.AddKnownHost( handle, self.OC3, "karaf", "karaf" )
         self.DownLoadCode( handle, 'https://github.com/sunyulin/OnosSystemTest.git' )
         self.DownLoadCode( handle, 'https://gerrit.onosproject.org/onos' )
         self.ChangeOnosName(self.agentusername,self.agentpassword)

@@ -83,7 +83,7 @@ class connection( foundation ):
         Result = 0
         while Result != 2:
             Result = keysub.expect( ["Overwrite", "Enter", pexpect.EOF, \
-                                     pexpect.prompt, pexpect.TIMEOUT])
+                                     keysub.prompt, pexpect.TIMEOUT])
             if Result == 0:
                 keysub.sendline("y")
             if Result == 1 or Result == 2:

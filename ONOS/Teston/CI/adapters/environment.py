@@ -93,7 +93,7 @@ class environment( connection ):
         Pushkeys.sendline( cmd )
         Result = 0
         while Result != 2:
-            Result = Pushkeys.expect( ["(yes/no)?", "assword:", "[pexpect]#", \
+            Result = Pushkeys.expect( ["(yes/no)?", "assword:", "PEXPECT]#", \
                                        pexpect.EOF, pexpect.TIMEOUT])
             if ( Result == 0 ):
                 Pushkeys.sendline( "yes" )
@@ -101,8 +101,11 @@ class environment( connection ):
                 Pushkeys.sendline( password )
             if ( Result == 2 ):
                 self.loginfo.log( "ONOS Push keys Success!" )
+                break
             if ( Result == 3 ):
                 self.loginfo.log( "ONOS Push keys Error!" )
+                break
+            time.sleep(2)
         Pushkeys.prompt( )
         print "Done!"
 

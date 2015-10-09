@@ -40,12 +40,15 @@ class connection( foundation ):
                 index = login.expect( ["closed", pexpect.EOF] )
                 if index == 0:
                     self.loginfo.log( "Add SSH Known Host Success!" )
+                    break
                 else:
                     self.loginfo.log( "Add SSH Known Host Failed! Please Check!" )
-                #login.interact()
+                    break
+                login.prompt( )
 
             if index == 1:
                 login.sendline('yes')
+            
 
     def GetEnvValue( self, handle, envname):
         """
@@ -83,7 +86,7 @@ class connection( foundation ):
         Result = 0
         while Result != 2:
             Result = keysub.expect( ["Overwrite", "Enter", pexpect.EOF, \
-                                     '#|$', pexpect.TIMEOUT])
+                                     '[PEXPECT]#', pexpect.TIMEOUT])
             if Result == 0:
                 keysub.sendline("y")
             if Result == 1 or Result == 2:

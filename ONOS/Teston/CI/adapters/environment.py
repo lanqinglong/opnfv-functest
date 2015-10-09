@@ -154,10 +154,10 @@ class environment( connection ):
         password: onos&compute node password
         """
         print "Now Changing " + testcase +  " name&password"
-        if masterusername is 'root':
+        if self.masterusername is 'root':
             filepath = '/root/'
         else :
-            filepath = '/home/' + masterusername + '/'
+            filepath = '/home/' + self.masterusername + '/'
         filepath = filepath +"OnosSystemTest/TestON/tests/" + testcase + "/" + \
                    testcase + ".topo"
         line = open(filepath,'r').readlines()

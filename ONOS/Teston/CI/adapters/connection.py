@@ -159,8 +159,11 @@ class connection( foundation ):
         """
         Intergrate for ONOS connection setup
         """
-        currentpath = os.getcwd()
-        filepath = os.path.join( currentpath, "onos/tools/dev/bash_profile" )
+        if self.masterusername is 'root':
+            filepath = '/root/'
+        else :
+            filepath = '/home/' + self.masterusername + '/'
+        filepath = os.path.join( filepath, "onos/tools/dev/bash_profile" )
         self.AddEnvIntoBashrc("source " + filepath + "\n")
         self.AddEnvIntoBashrc("export OCT=" + self.OCT)
         self.AddEnvIntoBashrc("export OC1=" + self.OC1)

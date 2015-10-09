@@ -155,6 +155,23 @@ class connection( foundation ):
             envAdd.close( )
         self.loginfo.log( "Add env to bashrc success!" )
 
+    def OnosRootPathChange( self, onospath ):
+        """
+        Change ONOS root path in file:bash_profile
+        onospath: path of onos root
+        """
+        print "Now Changing ONOS Root Path"
+        filepath = onospath + '/onos/tools/dev/bash_profile'
+        line = open(filepath, 'r').readlines()
+        lenall = len(line)-1 
+        for i in range(lenall):
+           if "export ONOS_ROOT" in line[i]:
+               line[i] = 'export ONOS_ROOT=' + onospath + '/onos'
+        NewFile = open(filepath, 'w')
+        NewFile.writelines(line)
+        NewFile.close
+        print "Done!"
+
     def OnosConnectionSet (self):
         """
         Intergrate for ONOS connection setup
@@ -163,6 +180,7 @@ class connection( foundation ):
             filepath = '/root/'
         else :
             filepath = '/home/' + self.masterusername + '/'
+        self.OnosRootPathChange( filepath )
         filepath = os.path.join( filepath, "onos/tools/dev/bash_profile" )
         self.AddEnvIntoBashrc("source " + filepath + "\n")
         self.AddEnvIntoBashrc("export OCT=" + self.OCT)

@@ -204,7 +204,7 @@ class environment( connection ):
         Onos Environment Setup function
         """
         self.Gensshkey( handle )
-        self.home = self.GetEnvValue( 'HOME' )
+        self.home = self.GetEnvValue( handle, 'HOME' )
         self.AddKnownHost( handle, self.OC1, "karaf", "karaf" )
         self.AddKnownHost( handle, self.OC2, "karaf", "karaf" )
         self.AddKnownHost( handle, self.OC3, "karaf", "karaf" )

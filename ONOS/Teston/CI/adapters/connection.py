@@ -166,7 +166,7 @@ class connection( foundation ):
         lenall = len(line)-1 
         for i in range(lenall):
            if "export ONOS_ROOT" in line[i]:
-               line[i] = 'export ONOS_ROOT=' + onospath + '/onos'
+               line[i] = 'export ONOS_ROOT=' + onospath + 'onos\n'
         NewFile = open(filepath, 'w')
         NewFile.writelines(line)
         NewFile.close

@@ -83,16 +83,18 @@ class connection( foundation ):
         Result = 0
         while Result != 2:
             Result = keysub.expect( ["Overwrite", "Enter", pexpect.EOF, \
-                                     keysub.prompt, pexpect.TIMEOUT])
+                                     '#|$', pexpect.TIMEOUT])
             if Result == 0:
                 keysub.sendline("y")
             if Result == 1 or Result == 2:
                 keysub.sendline("\n")
             if Result == 3:
                 self.loginfo.log( "Generate SSH key success." )
+                keysub.prompt()
                 break
             if Result == 4:
                 self.loginfo.log("Generate SSH key failed.")
+                keysub.prompt()
                 break
 
     def GetRootAuth( self, password ):

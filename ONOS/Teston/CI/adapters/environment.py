@@ -149,7 +149,7 @@ class environment( connection ):
         NewFile.close
         print "Done!"
 
-    def ChangeTestCasePara(testcase,user,password):
+    def ChangeTestCasePara(self, testcase, user, password):
         """
         When running test script, there's something need \
         to change in every test folder's *.param & *.topo files

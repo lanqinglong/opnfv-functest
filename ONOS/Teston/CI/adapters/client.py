@@ -11,7 +11,7 @@ class client( environment ):
         environment.__init__( self )
         self.loginfo = environment()
 
-    def RunScript( self, testname, masterusername, masterpassword ):
+    def RunScript( self, testname ):
         """
         Run ONOS Test Script
         Parameters:
@@ -19,7 +19,7 @@ class client( environment ):
         masterusername: The server username of running ONOS
         masterpassword: The server password of running ONOS
         """
-        self.ChangeTestCasePara( testname, masterusername, masterpassword )
+        self.ChangeTestCasePara( testname, self.masterusername, self.masterpassword )
         runtest = "OnosSystemTest/TestON/bin/cli.py run " + testname
         os.system(runtest)
         print "Done!"
@@ -29,6 +29,7 @@ class client( environment ):
 
         print "Test Begin....."
         self.OnosConnectionSet()
-        masterhandle = self.SSHlogin(self.localhost,self.masterusername,self.masterpassword)
+        masterhandle = self.SSHlogin(self.localhost, self.masterusername,
+                                    self.masterpassword)
         self.OnosEnvSetup( masterhandle )
         self.SSHRelease( masterhandle )

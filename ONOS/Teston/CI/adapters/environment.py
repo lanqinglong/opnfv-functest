@@ -14,12 +14,13 @@ import pexpect
 import re
 import sys
 import pxssh
-from foundation import foundation
+from connection import connection
 
-class environment:
+class environment( connection ):
 
     def __init__( self ):
-        self.loginfo = foundation( )
+        connection.__init__( self )
+        self.loginfo = connection( )
         self.masterhandle = ''
 
     def DownLoadCode( self, handle, codeurl ):
@@ -130,12 +131,9 @@ class environment:
         password: onos&compute node password
         """
         print "Now Changing ONOS name&password"
-        if masterusername is 'root':
-            filepath = '/root/'
-        else :
-            filepath = '/home/' +masterusername + '/'
-        line = open(filepath + "onos/tools/build/envDefaults", 'r').readlines()
-        lenall = len(line)-1
+        filepath = os.getenv( 'HOME' ) + 'onos/tools/build/envDefaults'
+        line = open(filepath, 'r').readlines()
+        lenall = len(line)-1 
         for i in range(lenall):
            if "ONOS_USER=" in line[i]:
                line[i]=line[i].replace("sdn",user)
@@ -143,7 +141,7 @@ class environment:
                line[i]=line[i].replace("sdn",user)
            if "ONOS_PWD" in line[i]:
                line[i]=line[i].replace("rocks",password)
-        NewFile = open("onos/tools/build/envDefaults",'w')
+        NewFile = open(filepath, 'w')
         NewFile.writelines(line)
         NewFile.close
         print "Done!"

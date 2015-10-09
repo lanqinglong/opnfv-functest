@@ -13,9 +13,10 @@ import re
 import sys
 from foundation import foundation
 
-class connection:
+class connection( foundation ):
 
     def __init__( self ):
+        foundation.__init__( self )
         self.loginfo = foundation()
 
     def AddKnownHost( self, ipaddr, username, password ):
@@ -45,19 +46,39 @@ class connection:
             if index == 1:
                 login.sendline('yes')
 
-    def Gensshkey( self ):
+    def GetEnvValue( self, handle, envname):
+        """
+        os.getenv only returns current user value
+        GetEnvValue returns a environment value of
+            current handle
+        eg: GetEnvValue(handle,'HOME')
+        """
+        envhandle = handle
+        envhandle.sendline( 'echo $' + envname )
+        envhandle.prompt( )
+        reg = envname + '\r\n(.*)'
+        envaluereg = re.compile( reg )
+        envalue = envaluereg.search( envhandle.before )
+        if envalue:
+            return envalue.groups()[0]
+        else:
+            return None
+
+    def Gensshkey( self, handle ):
         """
         Generate ssh keys, used for some server have no sshkey.
         """
         print "Now Generating SSH keys..."
         #Here file name may be id_rsa or id_ecdsa or others
         #So here will have a judgement
-        filelist = os.listdir( '~/.ssh' )
+        keysub = handle
+        filepath = self.GetEnvValue( keysub, 'HOME' ) + '/.ssh'
+        filelist = os.listdir( filepath )
         for item in filelist:
             if 'id' in item:
                 self.loginfo.log("SSH keys are exsit in ssh directory.")
                 return True
-        keysub = pexpect.spawn("ssh-keygen -t rsa")
+        keysub.sendline("ssh-keygen -t rsa")
         Result = 0
         while Result != 2:
             Result = keysub.expect( ["Overwrite", "Enter", pexpect.EOF, \

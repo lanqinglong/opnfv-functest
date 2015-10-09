@@ -3,14 +3,13 @@ Description:
     This file is used to run testcase 
     lanqinglong@huawei.com
 """
-from connection import connection 
 from environment import environment
-from foundation import foundation 
 
-class client( connection, foundation, environment ):
+class client( environment ):
 
     def __init__( self ):
-        self.loginfo = foundation()
+        environment.__init__( self )
+        self.loginfo = environment()
 
     def RunScript( self, testname, masterusername, masterpassword ):
         """

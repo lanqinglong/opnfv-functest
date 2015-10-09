@@ -31,7 +31,7 @@ class environment( connection ):
         codeurl: clone code url
         """
         print "Now loading test codes! Please wait in patient..."
-        originalfolder = os.getcwd()
+        originalfolder = self.home
         gitclone = handle
         gitclone.sendline( "git clone " + codeurl )
         index = 0
@@ -131,7 +131,7 @@ class environment( connection ):
         password: onos&compute node password
         """
         print "Now Changing ONOS name&password"
-        filepath = os.getenv( 'HOME' ) + 'onos/tools/build/envDefaults'
+        filepath = self.home + '/onos/tools/build/envDefaults'
         line = open(filepath, 'r').readlines()
         lenall = len(line)-1 
         for i in range(lenall):
@@ -204,6 +204,7 @@ class environment( connection ):
         Onos Environment Setup function
         """
         self.Gensshkey( handle )
+        self.home = self.GetEnvValue( 'HOME' )
         self.AddKnownHost( handle, self.OC1, "karaf", "karaf" )
         self.AddKnownHost( handle, self.OC2, "karaf", "karaf" )
         self.AddKnownHost( handle, self.OC3, "karaf", "karaf" )

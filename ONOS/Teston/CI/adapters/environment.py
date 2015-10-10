@@ -72,6 +72,8 @@ class environment( connection ):
         print "Now Cleaning test environment"
         handle.sendline("sudo apt-get install -y mininet")
         handle.prompt( )
+        handle.sendline("sudo apt-get install -y python-pip")
+        handle.prompt( )
         handle.sendline("sudo pip install configobj")
         handle.prompt( )
         handle.sendline("sudo apt-get install -y sshpass")

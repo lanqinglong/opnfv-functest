@@ -31,7 +31,7 @@ class client( environment ):
             Result = runhandle.expect(["PEXPECT]#", pexpect.EOF, pexpect.TIMEOUT])
             print runhandle.before
             if Result == 0:
-                print 'Done!'
+                print "Done!"
                 return
             time.sleep(1)
             circletime += 1
@@ -47,6 +47,7 @@ class client( environment ):
         masterhandle = self.SSHlogin(self.localhost, self.masterusername,
                                     self.masterpassword)
         self.OnosEnvSetup( masterhandle )
+        return masterhandle
     
     def onosclean( self, handle ):
         self.SSHRelease( handle )

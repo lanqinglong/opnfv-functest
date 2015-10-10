@@ -22,6 +22,7 @@ class environment( connection ):
         connection.__init__( self )
         self.loginfo = connection( )
         self.masterhandle = ''
+        self.home = ''
 
     def DownLoadCode( self, handle, codeurl ):
         """

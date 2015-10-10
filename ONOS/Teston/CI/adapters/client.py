@@ -4,6 +4,9 @@ Description:
     lanqinglong@huawei.com
 """
 from environment import environment
+import os
+import time
+import pexpect
 
 class client( environment ):
 
@@ -11,7 +14,7 @@ class client( environment ):
         environment.__init__( self )
         self.loginfo = environment()
 
-    def RunScript( self, testname ):
+    def RunScript( self, handle, testname, timeout=300 ):
         """
         Run ONOS Test Script
         Parameters:
@@ -20,11 +23,23 @@ class client( environment ):
         masterpassword: The server password of running ONOS
         """
         self.ChangeTestCasePara( testname, self.masterusername, self.masterpassword )
-        runtest = "OnosSystemTest/TestON/bin/cli.py run " + testname
-        os.system(runtest)
-        print "Done!"
+        runhandle = handle
+        runtest = self.home + "OnosSystemTest/TestON/bin/cli.py run " + testname
+        runhandle.sendline(runtest)
+        circletime = 0
+        while True:
+            Result = runhandle.expect(["PEXPECT]#", pexpect.EOF, pexpect.TIMEOUT])
+            print runhandle.before
+            if Result == 0:
+                print 'Done!'
+                return
+            time.sleep(1)
+            circletime += 1
+            if circletime > timeout:
+                break
+        self.loginfo.log( "Timeout when running the test, please check!" )
 
-    def onosbasic(self):
+    def onosstart( self ):
         #This is the compass run machine user&pass,you need to modify
 
         print "Test Begin....."
@@ -32,4 +47,6 @@ class client( environment ):
         masterhandle = self.SSHlogin(self.localhost, self.masterusername,
                                     self.masterpassword)
         self.OnosEnvSetup( masterhandle )
-        self.SSHRelease( masterhandle )
+    
+    def onosclean( self, handle ):
+        self.SSHRelease( handle )

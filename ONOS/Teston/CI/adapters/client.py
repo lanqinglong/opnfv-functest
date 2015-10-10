@@ -1,6 +1,6 @@
 """
 Description:
-    This file is used to run testcase 
+    This file is used to run testcase
     lanqinglong@huawei.com
 """
 from environment import environment

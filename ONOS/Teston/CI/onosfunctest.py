@@ -7,7 +7,7 @@ CASE2 - Ovsdb test&Default configuration&Vm go online
 
 lanqinglong@huawei.com
 """
-from adapters.client import client 
+from adapters.client import client
 
 
 if __name__=="__main__":
@@ -26,5 +26,7 @@ if __name__=="__main__":
     main.OCN2 = '189.42.8.105'
     main.localhost = main.OCT
     main.onosbasic()
-    main.RunScript("FUNCvirNetNB",main.masterusername,main.masterpassword)
-    main.RunScript("FUNCovsdbtest",main.masterusername,main.masterpassword)
+    
+    #scripts to run
+    main.RunScript("FUNCvirNetNB")
+    main.RunScript("FUNCovsdbtest")

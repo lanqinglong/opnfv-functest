@@ -48,7 +48,6 @@ class connection( foundation ):
 
             if index == 1:
                 login.sendline('yes')
-            
 
     def GetEnvValue( self, handle, envname):
         """
@@ -163,7 +162,7 @@ class connection( foundation ):
         print "Now Changing ONOS Root Path"
         filepath = onospath + '/onos/tools/dev/bash_profile'
         line = open(filepath, 'r').readlines()
-        lenall = len(line)-1 
+        lenall = len(line) - 1
         for i in range(lenall):
            if "export ONOS_ROOT" in line[i]:
                line[i] = 'export ONOS_ROOT=' + onospath + 'onos\n'

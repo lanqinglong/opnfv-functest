@@ -136,7 +136,7 @@ class environment( connection ):
         print "Now Changing ONOS name&password"
         filepath = self.home + '/onos/tools/build/envDefaults'
         line = open(filepath, 'r').readlines()
-        lenall = len(line)-1 
+        lenall = len(line) - 1
         for i in range(lenall):
            if "ONOS_USER=" in line[i]:
                line[i]=line[i].replace("sdn",user)

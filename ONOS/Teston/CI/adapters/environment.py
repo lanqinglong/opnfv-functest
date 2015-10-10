@@ -222,7 +222,7 @@ class environment( connection ):
         self.AddKnownHost( handle, self.OC3, "karaf", "karaf" )
         self.DownLoadCode( handle, 'https://github.com/sunyulin/OnosSystemTest.git' )
         self.DownLoadCode( handle, 'https://gerrit.onosproject.org/onos' )
-        CopyOnostoTestbin()
+        self.CopyOnostoTestbin()
         self.ChangeOnosName(self.agentusername,self.agentpassword)
         self.InstallDefaultSoftware( handle )
         self.SetOnosEnvVar(handle, self.masterpassword,self.agentpassword)

@@ -205,6 +205,12 @@ class environment( connection ):
         #Release ssh
         handle.logout()
 
+    def CopyOnostoTestbin( self ):
+        sourcefile = '../dependencies/onos'
+        destifile = self.home + '/onos/tools/test/bin/'
+        runcommand = 'cp' + sourcefile + destifile
+        os.system( runcommand )
+        
     def OnosEnvSetup( self, handle ):
         """
         Onos Environment Setup function

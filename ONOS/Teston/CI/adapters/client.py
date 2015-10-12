@@ -28,15 +28,12 @@ class client( environment ):
         runtest = self.home + "/OnosSystemTest/TestON/bin/cli.py run " + testname
         runhandle.sendline(runtest)
         circletime = 0
-        showscreeninfo = ''
+        lastshowscreeninfo = ''
         while True:
             Result = runhandle.expect(["PEXPECT]#", pexpect.EOF, pexpect.TIMEOUT])
-            reg = showscreeninfo + '([\s\S]*)'
-            envaluereg = re.compile( reg )
-            envalue = envaluereg.search( runhandle.before )
-            if envalue:
-                showscreeninfo = envalue.groups()[0]
-            print showscreeninfo
+            curshowscreeninfo = runhandle.before
+            if (len(lastshowscreeninfo) != len(curshowscreeninfo)):
+                print str(curshowscreeninfo)[len(lastshowscreeninfo)::]
             if Result == 0:
                 print "Done!"
                 return

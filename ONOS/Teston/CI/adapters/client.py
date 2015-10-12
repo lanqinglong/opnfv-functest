@@ -34,6 +34,7 @@ class client( environment ):
             curshowscreeninfo = runhandle.before
             if (len(lastshowscreeninfo) != len(curshowscreeninfo)):
                 print str(curshowscreeninfo)[len(lastshowscreeninfo)::]
+                lastshowscreeninfo = curshowscreeninfo
             if Result == 0:
                 print "Done!"
                 return

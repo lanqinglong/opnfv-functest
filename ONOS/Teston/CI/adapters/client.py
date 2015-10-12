@@ -29,10 +29,10 @@ class client( environment ):
         runhandle.sendline(runtest)
         circletime = 0
         showscreeninfo = ''
+        reg = showscreeninfo + '([\s\S]*)'
+        envaluereg = re.compile( reg )
         while True:
             Result = runhandle.expect(["PEXPECT]#", pexpect.EOF, pexpect.TIMEOUT])
-            reg = showscreeninfo + '([\s\S]+)'
-            envaluereg = re.compile( reg )
             envalue = envaluereg.search( runhandle.before )
             if envalue:
                 showscreeninfo = envalue.groups()[0]

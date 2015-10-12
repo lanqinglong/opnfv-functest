@@ -210,7 +210,7 @@ class environment( connection ):
         destifile = self.home + '/onos/tools/test/bin/'
         runcommand = 'cp ' + sourcefile + ' ' + destifile
         os.system( runcommand )
-        
+
     def OnosEnvSetup( self, handle ):
         """
         Onos Environment Setup function

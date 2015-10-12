@@ -53,6 +53,6 @@ class client( environment ):
                                     self.masterpassword)
         self.OnosEnvSetup( masterhandle )
         return masterhandle
-    
+
     def onosclean( self, handle ):
         self.SSHRelease( handle )

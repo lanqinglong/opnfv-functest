@@ -7,6 +7,7 @@ from environment import environment
 import os
 import time
 import pexpect
+import re
 
 class client( environment ):
 

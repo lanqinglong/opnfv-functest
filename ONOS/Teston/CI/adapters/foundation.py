@@ -15,7 +15,7 @@ class foundation:
 
         currentpath = os.getcwd()
         self.logdir = os.path.join( currentpath, 'log' )
-        self.workhome = currentpath[0:currentpath.rfind('testcases')]
+        self.workhome = currentpath[0:currentpath.rfind('testcases')-1]
         self.Result_DB = ''
 
     def log (self, loginfo):

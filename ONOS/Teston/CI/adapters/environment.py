@@ -63,6 +63,21 @@ class environment( connection ):
             time.sleep(5)
         gitclone.prompt( )
 
+    def CheckSoftwareExist( self, handle, softwarename ):
+        """
+        Check software exist
+        parameters:
+        handle(input): current working handle
+        softwarename(input): software name
+        """
+        handle.sendline("apt-cache show " + softwarename )
+        Result = Pushkeys.expect(['No packages found','Package:', \
+                                  pexpect.EOF, pexpect.TIMEOUT])
+        if Result == 1:
+            return True
+        else:
+            return False
+
     def InstallDefaultSoftware( self, handle ):
         """
         Install default software
@@ -70,13 +85,17 @@ class environment( connection ):
         handle(input): current working handle
         """
         print "Now Cleaning test environment"
-        handle.sendline("sudo apt-get install -y mininet")
-        handle.prompt( )
-        handle.sendline("sudo apt-get install -y python-pip")
-        handle.prompt( )
+        if not CheckSoftwareExist( handle, 'mininet' ):
+            handle.sendline("sudo apt-get install -y mininet")
+            handle.prompt( )
+        if not CheckSoftwareExist( handle, 'python-pip' ):
+            handle.sendline("sudo apt-get install -y python-pip")
+            handle.prompt( )
+        if not CheckSoftwareExist( handle, 'sshpass' ):
+            handle.sendline("sudo apt-get install -y sshpass")
+            handle.prompt( )
+
         handle.sendline("sudo pip install configobj")
-        handle.prompt( )
-        handle.sendline("sudo apt-get install -y sshpass")
         handle.prompt( )
         handle.sendline("OnosSystemTest/TestON/bin/cleanup.sh")
         handle.prompt( )

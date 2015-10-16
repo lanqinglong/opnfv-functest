@@ -48,7 +48,7 @@ class foundation:
         self.masterusername = str(functest_yaml.get("ONOS").get("general").\
                                   get('onosbench_username'))
         self.masterpassword = str(functest_yaml.get("ONOS").get("general").\
-                                  get("onosbench_password "))
+                                  get("onosbench_password"))
         self.agentusername = str(functest_yaml.get("ONOS").get("general").\
                                   get("onoscli_username"))
         self.agentpassword = str(functest_yaml.get("ONOS").get("general").\

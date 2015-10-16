@@ -103,7 +103,7 @@ ONOS:
         onosbench_password: 'root'
         onoscli_username: 'root'
         onoscli_password: 'root'
-        runtimeout = 300
+        runtimeout: 300
     environment:
         OCT: '189.42.8.99'
         OC1: '189.42.8.101'

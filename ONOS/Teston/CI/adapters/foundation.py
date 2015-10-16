@@ -44,18 +44,21 @@ class foundation:
             functest_yaml = yaml.safe_load(f)
         f.close()
 
-        self.Result_DB = functest_yaml.get("results").get("test_db_url")
-        self.masterusername = functest_yaml.get("ONOS").get("general").\
-                            get('onosbench_username')
-        self.masterpassword = functest_yaml.get("ONOS").get("general").get("onosbench_password ")
-        self.agentusername = functest_yaml.get("ONOS").get("general").get("onoscli_username")
-        self.agentpassword = functest_yaml.get("ONOS").get("general").get("onoscli_password")
+        self.Result_DB = str(functest_yaml.get("results").get("test_db_url"))
+        self.masterusername = str(functest_yaml.get("ONOS").get("general").\
+                                  get('onosbench_username'))
+        self.masterpassword = str(functest_yaml.get("ONOS").get("general").\
+                                  get("onosbench_password "))
+        self.agentusername = str(functest_yaml.get("ONOS").get("general").\
+                                  get("onoscli_username"))
+        self.agentpassword = str(functest_yaml.get("ONOS").get("general").\
+                                 get("onoscli_password"))
         self.runtimeout = functest_yaml.get("ONOS").get("general").get("runtimeout")
-        self.OCT = functest_yaml.get("ONOS").get("environment").get("OCT")
-        self.OC1 = functest_yaml.get("ONOS").get("environment").get("OC1")
-        self.OC2 = functest_yaml.get("ONOS").get("environment").get("OC2")
-        self.OC3 = functest_yaml.get("ONOS").get("environment").get("OC3")
-        self.OCN = functest_yaml.get("ONOS").get("environment").get("OC4")
-        self.OCN2 = functest_yaml.get("ONOS").get("environment").get("OC5")
+        self.OCT = str(functest_yaml.get("ONOS").get("environment").get("OCT"))
+        self.OC1 = str(functest_yaml.get("ONOS").get("environment").get("OC1"))
+        self.OC2 = str(functest_yaml.get("ONOS").get("environment").get("OC2"))
+        self.OC3 = str(functest_yaml.get("ONOS").get("environment").get("OC3"))
+        self.OCN = str(functest_yaml.get("ONOS").get("environment").get("OCN"))
+        self.OCN2 = str(functest_yaml.get("ONOS").get("environment").get("OCN2"))
         self.localhost = self.OCT
         return True
